@@ -1,6 +1,3 @@
-import 'package:intl/intl.dart';
-
-
 class WeatherModel {
   DateTime now = DateTime.now();
 

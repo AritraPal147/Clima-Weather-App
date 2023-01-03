@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:clima/screens/location_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,6 +7,7 @@ import 'package:clima/services/networking.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 const apiKey = '7eeaf49b1dfa830485643fb940d25dd9';
+const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather?';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -14,8 +16,7 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-
-  late double latitude, longitude;
+  String loadingScreenMessage = 'Loading';
 
   @override
   void initState() {
@@ -27,7 +28,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     Location location = Location();
     await location.getCurrentLocation().catchError((e){
       Fluttertoast.showToast(
-          msg: e,
+          msg: '$e. App will shut down in 3 seconds',
           toastLength: Toast.LENGTH_LONG,
           timeInSecForIosWeb: 3,
           backgroundColor: Colors.black,
@@ -35,8 +36,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
           fontSize: 16.0
       );
       print(e);
+      Duration threeSeconds = Duration(seconds: 3);
+      Future.delayed(threeSeconds, (){
+        exit(0);
+      });
     }).then((value) async {
-      NetworkHelper networkHelper = NetworkHelper('https://api.openweathermap.org/data/2.5/weather?'
+      NetworkHelper networkHelper = NetworkHelper('$openWeatherMapURL'
           'lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric');
 
       var weatherData = await networkHelper.getData();
@@ -44,7 +49,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       Navigator.push(context, MaterialPageRoute(builder: (context){
         return LocationScreen(locationWeather: weatherData
           );
-      }));
+      })).then((value) => getLocationData());
     });
   }
 

@@ -1,4 +1,9 @@
+import 'package:intl/intl.dart';
+
+
 class WeatherModel {
+  DateTime now = DateTime.now();
+
   String getWeatherIcon(int condition) {
     if (condition < 300) {
       return '🌩';
@@ -11,7 +16,11 @@ class WeatherModel {
     } else if (condition < 800) {
       return '🌫';
     } else if (condition == 800) {
-      return '☀️';
+      if (now.hour >= 18 || now.hour <= 6) {
+        return '🌙';
+      } else {
+        return '☀️';
+      }
     } else if (condition <= 804) {
       return '☁️';
     } else {

@@ -1,7 +1,5 @@
 class WeatherModel {
-  DateTime now = DateTime.now();
-
-  String getWeatherIcon(int condition) {
+  String getWeatherIcon(int condition, DateTime now) {
     if (condition < 300) {
       return '🌩';
     } else if (condition < 400) {

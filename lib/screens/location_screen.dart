@@ -18,29 +18,39 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  late DateTime now;
   WeatherModel weather = WeatherModel();
+  late int timezone;
   late int temperature;
   late String weatherIcon;
   late String cityName;
   late String weatherMessage;
   late var weatherData;
+  late String backgroundImage;
 
   @override
   void initState() {
     super.initState();
-
     updateUI(widget.locationWeather);
   }
 
   void updateUI(dynamic weatherData){
     setState(() {
       double temp = weatherData['main']['temp'];
+      timezone = weatherData['timezone'];
+      now = DateTime.now().add(Duration(seconds: timezone - DateTime.now().timeZoneOffset.inSeconds));
+
       temperature = temp.toInt();
       weatherMessage = weather.getMessage(temperature);
       var condition = weatherData['weather'][0]['id'];
-      weatherIcon = weather.getWeatherIcon(condition);
+      weatherIcon = weather.getWeatherIcon(condition, now);
 
       cityName = weatherData['name'];
+      if (now.hour >= 18 || now.hour <= 6) {
+        backgroundImage = 'images/night_background.png';
+      } else {
+        backgroundImage = 'images/day_background.png';
+      }
     });
   }
 
@@ -53,7 +63,7 @@ class _LocationScreenState extends State<LocationScreen> {
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: const AssetImage('images/location_background.jpg'),
+                image: AssetImage(backgroundImage),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                     Colors.white.withOpacity(0.8), BlendMode.dstATop),
@@ -90,6 +100,7 @@ class _LocationScreenState extends State<LocationScreen> {
                             if (typedName != null) {
                               try {
                                 var url = '$openWeatherMapURL?q=$typedName&appid=$apiKey&units=metric';
+                                print(url);
                                 NetworkHelper networkHelper = NetworkHelper(
                                     url);
                                 weatherData = await networkHelper.getData();

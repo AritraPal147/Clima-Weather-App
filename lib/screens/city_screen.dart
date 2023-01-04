@@ -5,7 +5,7 @@ class CityScreen extends StatefulWidget {
   const CityScreen({super.key});
 
   @override
-  _CityScreenState createState() => _CityScreenState();
+  State<CityScreen> createState() => _CityScreenState();
 }
 
 class _CityScreenState extends State<CityScreen> {

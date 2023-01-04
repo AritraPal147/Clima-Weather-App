@@ -14,7 +14,7 @@ class LocationScreen extends StatefulWidget {
   final locationWeather;
 
   @override
-  _LocationScreenState createState() => _LocationScreenState();
+  State<LocationScreen> createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
@@ -90,7 +90,6 @@ class _LocationScreenState extends State<LocationScreen> {
                             if (typedName != null) {
                               try {
                                 var url = '$openWeatherMapURL?q=$typedName&appid=$apiKey&units=metric';
-                                print(url);
                                 NetworkHelper networkHelper = NetworkHelper(
                                     url);
                                 weatherData = await networkHelper.getData();

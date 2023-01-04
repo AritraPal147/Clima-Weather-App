@@ -108,7 +108,7 @@ class _LocationScreenState extends State<LocationScreen> {
                               }
                               catch(e){
                                 Fluttertoast.showToast(
-                                    msg: 'Not a valid country name',
+                                    msg: 'Not a valid city name',
                                     toastLength: Toast.LENGTH_LONG,
                                     timeInSecForIosWeb: 3,
                                     backgroundColor: Colors.black,

@@ -3,7 +3,7 @@ import 'package:clima/utilities/constants.dart';
 import 'package:clima/services/weather.dart';
 import 'package:clima/screens/city_screen.dart';
 import 'package:clima/services/networking.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 const apiKey = '7eeaf49b1dfa830485643fb940d25dd9';
 const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather';
@@ -107,20 +107,34 @@ class _LocationScreenState extends State<LocationScreen> {
                                 updateUI(weatherData);
                               }
                               catch(e){
-                                Fluttertoast.showToast(
-                                    msg: 'Not a valid city name',
-                                    toastLength: Toast.LENGTH_LONG,
-                                    timeInSecForIosWeb: 3,
-                                    backgroundColor: Colors.black,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0
-                                );
-                                if (!mounted) return;
-                                Navigator.push(
-                                    context, MaterialPageRoute(
-                                    builder: (context){
-                                      return const CityScreen();
-                                    }));
+                                Alert(
+                                  context: context,
+                                  type: AlertType.error,
+                                  style: alertStyle,
+                                  title: "ERROR",
+                                  desc: "Invalid City Name",
+                                  buttons: [
+                                    DialogButton(
+                                      onPressed: () async {
+                                        if (!mounted) return;
+                                        Navigator.pop(context);
+                                        await Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                            builder: (context){
+                                              return const CityScreen();
+                                            }));
+                                      },
+                                      gradient: const LinearGradient(colors: [
+                                        Color.fromRGBO(116, 116, 191, 1.0),
+                                        Color.fromRGBO(52, 138, 199, 1.0)
+                                      ]),
+                                      width: 120,
+                                      child: const Text(
+                                        'Cancel',
+                                      ),
+                                    )
+                                  ],
+                                ).show();
                               }
                             }
                           },

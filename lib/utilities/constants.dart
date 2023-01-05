@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 const kTempTextStyle = TextStyle(
   fontFamily: 'Spartan MB',
   fontSize: 80.0,
+);
+
+const AlertStyle alertStyle = AlertStyle(
+    backgroundColor: Colors.black,
+    titleStyle: TextStyle(
+      color: Colors.white,
+    ),
+    descStyle: TextStyle(
+      color: Colors.white,
+    )
 );
 
 const kMessageTextStyle = TextStyle(
